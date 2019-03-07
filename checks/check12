@@ -17,10 +17,10 @@ CHECK_ALTERNATE_check102="check12"
 check12(){
   # "Ensure multi-factor authentication (MFA) is enabled for all IAM users that have a console password (Scored)"
   # List users with password enabled
-  COMMAND12_LIST_USERS_WITH_PASSWORD_ENABLED=$(cat $TEMP_REPORT_FILE|awk -F, '{ print $1,$4 }' |grep true | awk '{ print $1 }')
+  COMMAND12_LIST_USERS_WITH_PASSWORD_ENABLED=$(awk -F, '{ print $1,$4 }' < "${TEMP_REPORT_FILE}" | grep true | awk '{ print $1 }')
   COMMAND12=$(
     for i in $COMMAND12_LIST_USERS_WITH_PASSWORD_ENABLED; do
-      cat $TEMP_REPORT_FILE|awk -F, '{ print $1,$8 }' |grep "^$i " |grep false | awk '{ print $1 }'
+      awk -F, '{ print $1,$8 }' < "${TEMP_REPORT_FILE}" | grep "^$i " | grep false | awk '{ print $1 }'
     done)
     if [[ $COMMAND12 ]]; then
       for u in $COMMAND12; do
