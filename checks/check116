@@ -16,18 +16,18 @@ CHECK_ALTERNATE_check116="check116"
 
 check116(){
   # "Ensure IAM policies are attached only to groups or roles (Scored)"
-  LIST_USERS=$($AWSCLI iam list-users --query 'Users[*].UserName' --output text $PROFILE_OPT --region $REGION)
+  LIST_USERS=$("${AWSCLI}" iam list-users --query 'Users[*].UserName' --output text "${PROFILE_OPT}" --region "${REGION}")
   C116_NUM_USERS=0
-  for user in $LIST_USERS;do
-    USER_POLICY=$($AWSCLI iam list-attached-user-policies --output text $PROFILE_OPT --region $REGION --user-name $user)
+  for user in ${LIST_USERS};do
+    USER_POLICY=$("${AWSCLI}" iam list-attached-user-policies --output text "${PROFILE_OPT}" --region "${REGION}" --user-name "${user}")
     if [[ $USER_POLICY ]]; then
       textFail "$user has managed policy directly attached "
-      C116_NUM_USERS=$(expr $C116_NUM_USERS + 1)
+      C116_NUM_USERS=${#C116_NUM_USERS + 1}
     fi
-    USER_POLICY=$($AWSCLI iam list-user-policies --output text $PROFILE_OPT --region $REGION --user-name $user)
+    USER_POLICY=$("${AWSCLI}" iam list-user-policies --output text "${PROFILE_OPT}" --region "${REGION}" --user-name "${user}")
     if [[ $USER_POLICY ]]; then
       textFail "$user has inline policy directly attached "
-      C116_NUM_USERS=$(expr $C116_NUM_USERS + 1)
+      C116_NUM_USERS=${#C116_NUM_USERS + 1}
     fi
   done
   if [[ $C116_NUM_USERS -eq 0 ]]; then
