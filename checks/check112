@@ -17,8 +17,8 @@ CHECK_ALTERNATE_check112="check112"
 check112(){
   # "Ensure no root account access key exists (Scored)"
   # ensure the access_key_1_active and access_key_2_active fields are set to FALSE.
-  ROOTKEY1=$(cat $TEMP_REPORT_FILE |grep root_account|awk -F',' '{ print $9 }')
-  ROOTKEY2=$(cat $TEMP_REPORT_FILE |grep root_account|awk -F',' '{ print $14 }')
+  ROOTKEY1=$(grep root_account < "${TEMP_REPORT_FILE}"|awk -F',' '{ print $9 }')
+  ROOTKEY2=$(grep root_account < "${TEMP_REPORT_FILE}"|awk -F',' '{ print $14 }')
   if [ "$ROOTKEY1" == "false" ];then
     textPass "No access key 1 found for root"
   else
