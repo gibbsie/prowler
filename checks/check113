@@ -16,7 +16,7 @@ CHECK_ALTERNATE_check113="check113"
 
 check113(){
   # "Ensure MFA is enabled for the root account (Scored)"
-  COMMAND113=$($AWSCLI iam get-account-summary $PROFILE_OPT --region $REGION --output json --query 'SummaryMap.AccountMFAEnabled')
+  COMMAND113=$("${AWSCLI}" iam get-account-summary "${PROFILE_OPT}" --region "${REGION}" --output json --query 'SummaryMap.AccountMFAEnabled')
   if [ "$COMMAND113" == "1" ]; then
     textPass "Virtual MFA is enabled for root"
   else
